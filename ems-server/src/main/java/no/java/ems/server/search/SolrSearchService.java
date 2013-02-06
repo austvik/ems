@@ -147,7 +147,8 @@ public class SolrSearchService implements SearchService {
         additionalIndexedProperties.put("description", resource.getDescription());
         additionalIndexedProperties.put("gender", resource.getGender());
         additionalIndexedProperties.put("language", resource.getLanguage());
-        additionalIndexedProperties.put("nationality", resource.getNationality());
+        additionalIndexedProperties.put("countryCode", resource.getAddress() == null ? "NO" : resource.getAddress().getIsoCode());
+        additionalIndexedProperties.put("zipCode", resource.getAddress() == null ? "" : resource.getAddress().getZipCode());
         additionalIndexedProperties.put("emailaddresses", resource.getEmailAddresses());
         ResourceToSolrTranslator translator = new ResourceToSolrTranslator();
         translator.add(resource, additionalIndexedProperties);

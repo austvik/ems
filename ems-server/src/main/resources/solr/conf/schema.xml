@@ -204,7 +204,8 @@ lexicographic ordering isn't equal to the numeric ordering) -->
 
         <!-- common for person, session and speaker -->
         <field name="language" type="string" indexed="true" stored="false"/>
-        <field name="nationality" type="string" indexed="true" stored="false"/>
+        <field name="countryCode" type="string" indexed="true" stored="false"/>
+        <field name="zipCode" type="string" indexed="true" stored="false"/>
         <field name="description" type="text" indexed="true" stored="false"/>
 
         <!-- session specific -->

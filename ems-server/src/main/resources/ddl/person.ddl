@@ -8,7 +8,8 @@ create table person (
   gender          varchar(6),
   birthdate       date,
   language        varchar(8),
-  nationality     varchar(2),
+  countryCode     varchar(2),
+  zipCode         varchar(10),
   addresses       long varchar,
   photo           long varchar, -- URI of the photo
   primary key(id)

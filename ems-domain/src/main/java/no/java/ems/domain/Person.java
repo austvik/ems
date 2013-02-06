@@ -25,7 +25,8 @@ public class Person extends AbstractEntity implements Comparable<Person> {
     private Gender gender = Gender.Male;
     private LocalDate birthdate;
     private Language language;
-    private Nationality nationality;
+    private Address address;
+    private String zipCode;
     private List<EmailAddress> emailAddresses = new ArrayList<EmailAddress>();
     private Binary photo;
 
@@ -80,12 +81,20 @@ public class Person extends AbstractEntity implements Comparable<Person> {
         firePropertyChange("language", this.language, this.language = language);
     }
 
-    public Nationality getNationality() {
-        return nationality;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setNationality(final Nationality nationality) {
-        firePropertyChange("nationality", this.nationality, this.nationality = nationality);
+    public void setAddress(final Address address) {
+        firePropertyChange("address", this.address, this.address = address);
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(final String zipCode) {
+        firePropertyChange("zipcode", this.zipCode, this.zipCode = zipCode);
     }
 
     public List<EmailAddress> getEmailAddresses() {
@@ -129,7 +138,7 @@ public class Person extends AbstractEntity implements Comparable<Person> {
         setGender(other.getGender());
         setBirthdate(other.getBirthdate());
         setLanguage(other.getLanguage());
-        setNationality(other.getNationality());
+        setAddress(other.getAddress());
         setEmailAddresses(other.getEmailAddresses());
         setPhoto(other.getPhoto());
     }

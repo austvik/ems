@@ -5,7 +5,7 @@ import no.java.ems.dao.PersonDao;
 import no.java.ems.domain.Binary;
 import no.java.ems.domain.EmailAddress;
 import no.java.ems.domain.Language;
-import no.java.ems.domain.Nationality;
+import no.java.ems.domain.Address;
 import no.java.ems.domain.Person;
 import org.joda.time.LocalDate;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -58,11 +58,11 @@ public class JdbcTemplatePersonDao implements PersonDao {
         }
 
         if (person.getId() == null) {
-            updateSql = "insert into person (revision, tags, name, description, gender, birthdate, language, nationality, addresses, notes, photo, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            updateSql = "insert into person (revision, tags, name, description, gender, birthdate, language, countryCode, zipCode, addresses, notes, photo, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             person.setId(UUID.randomUUID().toString());
             person.setRevision(1);
         } else {
-            updateSql = "update person set revision = ?, tags = ?, name = ?, description = ?, gender = ?, birthdate = ?, language = ?, nationality = ?, addresses = ?, notes = ?, photo=? where id = ?";
+            updateSql = "update person set revision = ?, tags = ?, name = ?, description = ?, gender = ?, birthdate = ?, language = ?, countryCode = ?, zipCode = ?, addresses = ?, notes = ?, photo=? where id = ?";
             person.setRevision(person.getRevision() + 1);
         }
         jdbcTemplate.update(
@@ -76,8 +76,10 @@ public class JdbcTemplatePersonDao implements PersonDao {
                 person.getBirthdate() == null ? null : new Date(
                     person.getBirthdate().toDateTimeAtStartOfDay().toDate()
                         .getTime()
-                ), person.getLanguage() == null ? null : person.getLanguage().getIsoCode(),
-                person.getNationality() == null ? null : person.getNationality().getIsoCode(),
+                ), 
+                person.getLanguage() == null ? null : person.getLanguage().getIsoCode(),
+                person.getAddress() == null ? null : person.getAddress().getIsoCode(),
+                person.getAddress() == null ? null : person.getAddress().getZipCode(),
                 person.getEmailAddressesAsString(DELIMITER), person.getNotes(), photoUri, person.getId()},
             new int[]{
                 Types.INTEGER, // revision
@@ -87,7 +89,8 @@ public class JdbcTemplatePersonDao implements PersonDao {
                 Types.VARCHAR, // gender
                 Types.DATE, // birthdate
                 Types.VARCHAR, // language
-                Types.VARCHAR, // nationality
+                Types.VARCHAR, // countryCode
+                Types.VARCHAR, // zipCode
                 Types.LONGVARCHAR, // addresses
                 Types.LONGVARCHAR, // notes
                 Types.VARCHAR, // photoUri
@@ -141,7 +144,7 @@ public class JdbcTemplatePersonDao implements PersonDao {
             person.setGender(Person.Gender.valueOf(resultSet.getString("gender")));
             person.setBirthdate(toLocalDate(resultSet.getDate("birthdate")));
             person.setLanguage(Language.valueOf(resultSet.getString("language")));
-            person.setNationality(Nationality.valueOf(resultSet.getString("nationality")));
+            person.setAddress(Address.valueOf(resultSet.getString("countryCode"), resultSet.getString("zipCode")));
             String addresses = resultSet.getString("addresses");
             List<EmailAddress> emailAddresses = new ArrayList<EmailAddress>();
             if (addresses != null) {

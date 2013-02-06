@@ -1,7 +1,7 @@
 package no.java.ems.server.solr;
 
 import no.java.ems.domain.Event;
-import no.java.ems.domain.Nationality;
+import no.java.ems.domain.Address;
 import no.java.ems.domain.Person;
 import no.java.ems.domain.Session;
 import org.joda.time.LocalDate;
@@ -63,7 +63,7 @@ public class ResourceSolrTranslatorTestCase {
         person.setId(UUID.randomUUID().toString());
         person.setDescription("Some description");
         person.setGender(Person.Gender.Male);
-        person.setNationality(new Nationality("NO"));
+        person.setAddress(Address.valueOf("NO", "7013"));
         person.setTags(Arrays.asList("Super tag"));
         ResourceToSolrTranslator translator = new ResourceToSolrTranslator();
         //translator.add(person, Arrays.asList("id", "name", "description", "gender"));
@@ -74,7 +74,7 @@ public class ResourceSolrTranslatorTestCase {
         person.setId(UUID.randomUUID().toString());
         person.setDescription("Some description");
         person.setGender(Person.Gender.Female);
-        person.setNationality(new Nationality("NO"));
+        person.setAddress(Address.valueOf("NO", "5012"));
 
         //translator.add(person, Arrays.asList("id", "name", "description", "gender"));
         //assertNotNull(translator.getXML());
